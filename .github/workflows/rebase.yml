@@ -24,15 +24,15 @@ jobs:
       - if: steps.version.outputs.x86_64 == 'true'
         uses: mikefarah/yq@9adde1ac14bb283b8955d2b0d567bcaf3c69e639 # v4.42.1
         with:
-          cmd: yq '.repository.topics += " ,x86_64"' -i .github/settings.yml
+          cmd: yq '.repository.topics += ", x86_64"' -i .github/settings.yml
       - if: steps.version.outputs.aarch64 == 'true'
         uses: mikefarah/yq@9adde1ac14bb283b8955d2b0d567bcaf3c69e639 # v4.42.1
         with:
-          cmd: yq '.repository.topics += " ,aarch64"' -i .github/settings.yml
+          cmd: yq '.repository.topics += ", aarch64"' -i .github/settings.yml
       - if: steps.version.outputs.any == 'true'
         uses: mikefarah/yq@9adde1ac14bb283b8955d2b0d567bcaf3c69e639 # v4.42.1
         with:
-          cmd: yq '.repository.topics += " ,any"' -i .github/settings.yml
+          cmd: yq '.repository.topics += ", any"' -i .github/settings.yml
       - name: commit
         run: |
           if [ -n "$(git status --porcelain)" ]; then
