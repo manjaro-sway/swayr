@@ -1,4 +1,8 @@
 _extends: manjaro-contrib/.github
 repository:
   homepage: https://aur.archlinux.org/swayr.git
-
+  topics:
+    - arch
+    - package
+    - x86_64
+    - aarch64
