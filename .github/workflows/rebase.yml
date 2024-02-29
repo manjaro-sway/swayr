@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - run: yq '.repository.topics = "arch, package"]' -i .github/settings.yml
+      - run: yq '.repository.topics = "arch, package"' -i .github/settings.yml
       - id: version
         uses: manjaro-contrib/action-pkgbuild-info@main
       - if: steps.version.outputs.x86_64 == 'true'
