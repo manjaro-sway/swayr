@@ -16,47 +16,41 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - name: rebase
-        uses: manjaro-contrib/action-rebase@main
-        with:
-          upstream: https://aur.archlinux.org/swayr.git
-          dispatch-target: ${{ vars.PACKAGES_REPO }}
-          dispatch-token: ${{ secrets.DISPATCH_TOKEN }}
       - name: checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - run: yq -i -Y '.repository.topics += []' .github/settings.yml
+      - run: yq '.repository.topics += []' -i .github/settings.yml
       - id: version
         uses: manjaro-contrib/action-pkgbuild-info@main
       - if: steps.version.outputs.x86_64 == 'false'
         uses: mikefarah/yq@9adde1ac14bb283b8955d2b0d567bcaf3c69e639 # v4.42.1
         with:
-          cmd: yq -i -Y '.repository.topics -= ["x86_64"]' .github/settings.yml
+          cmd: yq '.repository.topics -= ["x86_64"]' -i .github/settings.yml
       - if: steps.version.outputs.x86_64 == 'true'
         uses: mikefarah/yq@9adde1ac14bb283b8955d2b0d567bcaf3c69e639 # v4.42.1
         with:
           cmd: |
             yq -e '.repository.topics | contains(["x86_64"]) | not' .github/settings.yml &&
-            yq -i -Y '.repository.topics += ["x86_64"]' .github/settings.yml
+            yq '.repository.topics += ["x86_64"]' -i .github/settings.yml
       - if: steps.version.outputs.aarch64 == 'false'
         uses: mikefarah/yq@9adde1ac14bb283b8955d2b0d567bcaf3c69e639 # v4.42.1
         with:
-          cmd: yq -i -Y '.repository.topics -= ["aarch64"]' .github/settings.yml
+          cmd: yq '.repository.topics -= ["aarch64"]' -i .github/settings.yml
       - if: steps.version.outputs.aarch64 == 'true'
         uses: mikefarah/yq@9adde1ac14bb283b8955d2b0d567bcaf3c69e639 # v4.42.1
         with:
           cmd: |
             yq -e '.repository.topics | contains(["aarch64"]) | not' .github/settings.yml &&
-            yq -i -Y '.repository.topics += ["aarch64"]' .github/settings.yml
+            yq '.repository.topics += ["aarch64"]' -i .github/settings.yml
       - if: steps.version.outputs.any == 'false'
         uses: mikefarah/yq@9adde1ac14bb283b8955d2b0d567bcaf3c69e639 # v4.42.1
         with:
-          cmd: yq -i -Y '.repository.topics -= ["any"]' .github/settings.yml
+          cmd: yq '.repository.topics -= ["any"]' -i .github/settings.yml
       - if: steps.version.outputs.any == 'true'
         uses: mikefarah/yq@9adde1ac14bb283b8955d2b0d567bcaf3c69e639 # v4.42.1
         with:
           cmd: |
             yq -e '.repository.topics | contains(["any"]) | not' .github/settings.yml &&
-            yq -i -Y '.repository.topics += ["any"]' .github/settings.yml
+            yq '.repository.topics += ["any"]' -i .github/settings.yml
       - name: commit
         run: |
           git config user.name "Manjaro Bot"
@@ -64,5 +58,10 @@ jobs:
           git add .github/settings.yml
           git commit -m "chore: topics updated"
           git push
-          
+      - name: rebase
+        uses: manjaro-contrib/action-rebase@main
+        with:
+          upstream: https://aur.archlinux.org/swayr.git
+          dispatch-target: ${{ vars.PACKAGES_REPO }}
+          dispatch-token: ${{ secrets.DISPATCH_TOKEN }}
       
