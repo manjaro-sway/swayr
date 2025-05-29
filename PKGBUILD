@@ -10,7 +10,7 @@ depends=()
 makedepends=('cargo')
 source=("$pkgname-$pkgver.tar.gz::https://static.crates.io/crates/$pkgname/$pkgname-$pkgver.crate")
 
-sha256sums=('33cc35ba79dd8256f2d3aef72961c3cabddbf3d91c0003bc8df99018a35566f5')
+sha256sums=('8e0e9fe170bb771dccb3c4e9a610f8b34a6ddbeb0cc29db6ee971c6c4c8d6ee0')
 
 build() {
    cd $pkgname-$pkgver
